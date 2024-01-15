@@ -25,7 +25,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'title' => ['required','min:3','max:200',Rule::unique('posts')->ignore($this->post)],//se il titolo è invariato non dà errore
             'body' => ['nullable'],
-            'image' => ['nullable','url']
+            'image' => ['nullable','image']
         ];
     }
 
@@ -34,7 +34,7 @@ class UpdatePostRequest extends FormRequest
             'title.required' => 'il titolo è obbligatorio',
             'title.min' => 'il titolo deve avere almeno :min caratteri',
             'title.max' => 'il titolo deve avere massimo :max caratteri',
-            'image.max' => 'L\'immagine deve essere un url',
+            'image.image' => 'L\'immagine deve essere un url',
         ];
     }
 }

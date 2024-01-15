@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -38,6 +39,10 @@ class PostController extends Controller
         $userId = auth()->id(); // or Auth::id();
         $data['slug'] = $slug;
         $data['user_id'] = $userId;
+        if($request->hasFile('image')){
+            $path = Storage::put('images',$request->image);
+            $data['image'] = $path;
+        }
         $post = Post::create($data);
         return redirect()->route('admin.posts.show', $post->id);
     }
@@ -67,6 +72,13 @@ class PostController extends Controller
         $slug = Str::slug($data['title'],'-');
         $data['user_id'] = $post->user_id;
         $data['slug'] = $slug;
+        if($request->hasFile('image')){
+            if($post->image){
+                Storage::delete($post->image);
+            }
+            $path = Storage::put('images',$request->image);
+            $data['image'] = $path;
+        }
         $post->update($data);
         return redirect()->route('admin.posts.show', $post->id);
     }
@@ -76,6 +88,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+        if($post->image){
+            Storage::delete($post->image);
+        }
         $post->delete();
         return to_route('admin.posts.index')->with('msg',"$post->title è stato eliminato");
     }

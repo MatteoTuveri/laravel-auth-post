@@ -202,3 +202,13 @@ Route::fallback(function() {
 });
 
 ```
+```
+aprire config/filesystem e cambiare da local a public
+sul terminale creare lo storage php artisan storage:link
+ai form applicare enctype="multipart/form-data" 
+
+per uplodare un file, cambiare da type="text" a type="file"
+
+nel controller in sore e update: $img_path = Storage::put('upload')
+
+leggerlo <img src="{{ asset('storage/...') }}"
