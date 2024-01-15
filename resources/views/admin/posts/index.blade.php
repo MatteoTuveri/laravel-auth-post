@@ -3,7 +3,7 @@
     <section class="container">
         <h1>Post Index</h1>
         @foreach ($posts as $post)
-            <a href="{{ route('admin.posts.show', $post->id) }}">{{ $post->title }}</a><br>
+            <a href="{{ route('admin.posts.show', $post->slug) }}">{{ $post->title }}</a><br>
         @endforeach
     </section>
     

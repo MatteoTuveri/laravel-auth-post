@@ -37,7 +37,7 @@ class PostController extends Controller
         $data = $request->validated();
         $slug = Str::slug($data['title'],'-');
         $userId = auth()->id(); // or Auth::id();
-        $data['slug'] = $slug;
+        $data['slug'] = Post::getSlug($data['title']);
         $data['user_id'] = $userId;
         if($request->hasFile('image')){
             $path = Storage::put('images',$request->image);
@@ -71,7 +71,9 @@ class PostController extends Controller
         $data = $request->validated();
         $slug = Str::slug($data['title'],'-');
         $data['user_id'] = $post->user_id;
-        $data['slug'] = $slug;
+        if($post->title !== $data['title']){
+            $data['slug'] = Post::getSlug($data['title']);
+        }
         if($request->hasFile('image')){
             if($post->image){
                 Storage::delete($post->image);
